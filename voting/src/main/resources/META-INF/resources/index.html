@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quarkus - Unconference Kafka Voting</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    function submitform(){
+        var optionValue = $('input[name=radioName]:checked', '#myForm').val();
+        var retJson = {};
+        retJson.option = optionValue;
+        var resultJson = JSON.stringify(retJson);
+
+        $.ajax({
+            type: "POST",
+            url: "http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/voting",
+            data: resultJson,
+            success: function(){alert("Thank you for your Vote!");},
+            dataType: "json",
+            contentType : "application/json"
+        });
+    }
+
+    </script>
+</head>
+
+<body>
+<h1>Vote the Kafka Topic for the Unconference</h1>
+<br/>
+<form method="post" action="#" id="myForm">
+    <input type="radio" name="radioName" value="0" checked> Kafka on OpenShift: AMQ Streams<br>
+    <input type="radio" name="radioName" value="1"> Reactive applications with Kafka<br>
+    <input type="radio" name="radioName" value="2"> AMQ Streams http/mqtt bridge<br>
+    <input type="radio" name="radioName" value="3"> Streams API: use cases<br>
+    <input type="radio" name="radioName" value="4"> Kafka connectors: use cases<br>
+    <input type="radio" name="radioName" value="5"> Kafka and debezium: use cases<br>
+    <input type="radio" name="radioName" value="6"> Kafka and other Red Hat mw products<br>
+    <input type="radio" name="radioName" value="7"> Kafka monitoring and Admin<br>
+    <input value="Submit" type="button" onclick="submitform()">
+</form>
+</body>
+</html>
