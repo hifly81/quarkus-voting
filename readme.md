@@ -11,7 +11,7 @@ http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/voting/results
 
 and on a grafana dashboard:
 
-http://grafana-quarkus-voting.apps.nodisk.space/d/Jm2gRytWk/unconference-result
+http://grafana-quarkus-voting.apps.nodisk.space/d/Jm2gRytWk/unconference-result?orgId=1&kiosk=tv&from=now-2d&to=now&refresh=5s
 
 ### Launch on OpenShift
 
