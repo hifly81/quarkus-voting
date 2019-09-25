@@ -7,7 +7,7 @@ http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/
 
 Results are available at:
 
-http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/voting/Results
+http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/voting/results
 
 and on a grafana dashboard:
 
