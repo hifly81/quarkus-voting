@@ -43,9 +43,3 @@ echo -e "\nStart Kafka container...."
 docker run -d --name my-cluster-kafka-bootstrap -p 9092:9092 --link zookeeper:zookeeper debezium/kafka
 echo -e "\nKafka started."
 
-########################### Voting Application
-sleep 5
-echo -e "\nStart Voting container..."
-docker run -d --name voting -p 8080:8080 --link postgres:postgres --link zookeeper:zookeeper --link my-cluster-kafka-bootstrap:my-cluster-kafka-bootstrap voting-service-quarkus
-echo -e "\Voting Application started."
-

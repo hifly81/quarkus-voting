@@ -1,4 +1,4 @@
-package com.redhat.demo.voting;
+package com.redhat.demo.voting.rest;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

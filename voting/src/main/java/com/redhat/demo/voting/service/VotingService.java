@@ -1,24 +1,16 @@
-package com.redhat.demo.voting;
+package com.redhat.demo.voting.service;
 
-import com.redhat.demo.voting.producer.Sender;
+import com.redhat.demo.voting.messaging.Sender;
 import com.redhat.demo.voting.rest.Result;
 import com.redhat.demo.voting.rest.Vote;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.*;
 
-@Path("/voting")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-public class VotingResource {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(VotingResource.class);
+@ApplicationScoped
+public class VotingService {
 
     private static Map<Integer, String> options = new HashMap<Integer, String>() {
         {
@@ -34,21 +26,13 @@ public class VotingResource {
     };
 
     @Inject
-    Sender sender;
-
-    @Inject
     EntityManager entityManager;
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "hello";
-    }
+    @Inject
+    Sender sender;
 
-    @GET
-    @Path("/results")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Result> results() {
+
+    public List<Result> getResults() {
         List<Object[]> results =
                 entityManager.createQuery("SELECT v.pollId, v.option, COUNT(v) AS total FROM Vote v GROUP BY v.pollId,v.option").getResultList();
         List<Result> returnList = new ArrayList<>();
@@ -63,19 +47,14 @@ public class VotingResource {
             temp.setDescription(options.get(option));
             returnList.add(temp);
         }
-
         return returnList;
     }
 
-    @POST
-    public Response add(Vote vote) {
-        //TODO
+    public Vote addVote(Vote vote) {
         vote.setPollId(123l);
         vote.setId(UUID.randomUUID().toString());
         vote.setDescription(options.get(vote.getOption()));
         sender.add(vote);
-        return Response.ok(vote).build();
+        return vote;
     }
-
-
 }

@@ -1,10 +1,9 @@
-package com.redhat.demo.voting.consumer;
+package com.redhat.demo.voting.messaging;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redhat.demo.voting.model.VoteEntity;
-import com.redhat.demo.voting.producer.Sender;
 import io.smallrye.reactive.messaging.annotations.Merge;
 import io.smallrye.reactive.messaging.kafka.KafkaMessage;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -40,7 +39,6 @@ public class Consumer {
             String description = json.get("description").asText();
 
             //Store the vote
-
             LOGGER.info("Received message from kafka with the message: " + json);
 
             VoteEntity entity = new VoteEntity();

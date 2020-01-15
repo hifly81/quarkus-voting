@@ -1,4 +1,4 @@
-package com.redhat.demo.voting.producer;
+package com.redhat.demo.voting.messaging;
 
 import com.redhat.demo.voting.rest.Vote;
 import io.smallrye.reactive.messaging.kafka.KafkaMessage;

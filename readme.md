@@ -1,27 +1,7 @@
 Quarkus App for Voting
 =============================
 
-### Vote!
-
-http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/
-
-Results are available at:
-
-http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/voting/results
-
-and on a grafana dashboard:
-
-http://grafana-quarkus-voting.apps.nodisk.space/d/Jm2gRytWk/unconference-result?orgId=1&kiosk=tv&from=now-2d&to=now&refresh=5s
-
 ### Launch on OpenShift
-
-A running ocp (3.11) cluster is available at:<br>
-https://ocp.nodisk.space:8443/console/project/quarkus-voting/overview
-
-These are the URLs of public microservices:
-
-Voting service:<br>
-http://voting-service-quarkus-quarkus-voting.apps.nodisk.space
 
 Images are downloaded from docker hub and from https://quay.io
 
@@ -33,7 +13,7 @@ Images:
 In order to create the demo on your openshift environment, you need:
  - ocp user with cluster-admin role
  - oc client installed on your machine (tested with 3.11.x)
- - AMQ Streams 1.1 for ocp downloaded from Red Hat<br>
+ - AMQ Streams 1.x for ocp downloaded from Red Hat<br>
  https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams
 
 Follow these instructions to create the demo:
@@ -50,8 +30,6 @@ Create postgres, then create voting database:
 ```bash
 oc new-app debezium/postgres
 oc patch dc/postgres --patch '{"spec":{"template":{"spec":{"serviceAccountName": "runasanyuid"}}}}'
-
-
 oc exec $(oc get pods | grep postgres | cut -d " " -f1) -- bash -c 'psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE voting;"'
 ```
 
@@ -95,6 +73,12 @@ wget https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/met
 Follow the instruction to import the kafka and zookeeper grafana dashboards:<br>
 https://strimzi.io/docs/latest/#grafana_dashboard
 
+Results will be available at:
+
+http://<voting-ocp-route>/voting/results
+
+and on a grafana dashboard
+
 
 ### Launch on local env - linux and mac
 
@@ -111,6 +95,23 @@ Images:
 cd voting/
 ./deploy-docker.sh
 ```
+
+If you want to run the voting application in dev mode use the script:
+
+```bash
+cd voting/
+./deploy-docker-no-voting.sh
+```
+
+and the run the voting application with:
+
+```bash
+cd voting/
+./mvnw compile quarkus:dev (debug port 5005)
+```
+
+
+
 ### Compile and Create Images
 
 Launch the script to compile and create the images:

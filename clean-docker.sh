@@ -25,7 +25,7 @@ docker rm $(docker ps -a | grep postgres | cut -d ' ' -f 1)
 docker rmi debezium/zookeeper
 docker rmi debezium/kafka
 docker rmi debezium/postgres
-docker rmi hifly81/voting-service-quarkus
+docker rmi voting-service-quarkus
 
 
 echo -e "\nPruning done"
