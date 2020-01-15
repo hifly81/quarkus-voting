@@ -119,6 +119,7 @@ mvn clean compile test
 
 ### Endpoints
 
+```bash
 GET: <url>/health/live
 
 GET: <url>/health/ready
@@ -128,10 +129,11 @@ GET: <url>/voting/results
 POST: <url>/voting<br>
 body: <br>
 {
-    "id": "<string>"
-    "pollId": <int>,
-    "option": <int>
+    "id": "string"
+    "pollId": int,
+    "option": int
 }
+```
 
 
 ### Compile and Create Images
