@@ -103,12 +103,19 @@ cd voting/
 ./deploy-docker-no-voting.sh
 ```
 
-and the run the voting application with:
+and then run the voting application with:
 
 ```bash
 cd voting/
 ./mvnw compile quarkus:dev (debug port 5005)
 ```
+
+To test the application run:
+```bash
+cd voting/
+mvn clean compile test
+```
+
 
 
 

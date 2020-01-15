@@ -1,6 +1,7 @@
 package com.redhat.demo.voting.rest;
 
 import com.redhat.demo.voting.service.VotingService;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +21,16 @@ public class VotingResource {
     @Inject
     VotingService votingService;
 
+    @ConfigProperty(name = "greeting.message", defaultValue="!")
+    String greetingMessage;
+
+    @ConfigProperty(name = "greeting.name", defaultValue="!")
+    String greetingName;
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        return "hello";
+        return greetingMessage + " " + greetingName;
     }
 
     @GET
