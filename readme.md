@@ -119,28 +119,15 @@ mvn clean compile test
 
 ### Endpoints
 
-```bash
-GET: <url>/health/live
-
-GET: <url>/health/ready
-
-GET: <url>/voting/results
-
-POST: <url>/voting<br>
-body: <br>
-{
-    "id": "string"
-    "pollId": int,
-    "option": int
-}
-```
+Test them with swagger, available at:<br>
+http://<host>/swagger-ui
 
 
 ### Compile and Create Images
 
-Launch the script to compile and create the images:
+Launch the script to compile and create the native images:
 
 ```bash
 cd voting/
-./build-image.sh
+./build-native-image.sh
 ```
