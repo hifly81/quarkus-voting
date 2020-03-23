@@ -16,6 +16,6 @@ public class VotingResourceTest {
                 .when().get("/voting")
                 .then()
                 .statusCode(200)
-                .body(is("hello quarkus"));
+                .body(is("hello voting app"));
     }
 }
