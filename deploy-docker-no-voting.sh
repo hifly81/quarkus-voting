@@ -24,7 +24,7 @@ echo -e "\nPruning done. Starting application..."
 ############################ Postgres
 
 echo -e "\nStart Postgresql container...."
-docker run -d --name postgres -p 5432:5432 debezium/postgres
+docker run -d -e POSTGRES_PASSWORD=postgres --name postgres -p 5432:5432 debezium/postgres
 sleep 5
 echo -e "\nCREATE voting database...."
 docker exec -it postgres psql -h localhost -p 5432 -U postgres -c 'CREATE DATABASE voting;'
