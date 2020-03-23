@@ -1,7 +1,7 @@
 package com.redhat.demo.voting.messaging;
 
 import com.redhat.demo.voting.rest.Vote;
-import io.smallrye.reactive.messaging.kafka.KafkaMessage;
+import io.smallrye.reactive.messaging.kafka.KafkaRecord;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,13 +31,13 @@ public class Sender {
     }
 
     @Outgoing("voting")
-    public CompletionStage<KafkaMessage<String, String>> send() {
+    public CompletionStage<KafkaRecord<String, String>> send() {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 Vote vote = messages.take();
                 LOGGER.info("Sending message to kafka with the message: " + vote);
                 String json = jsonb.toJson(vote);
-                return KafkaMessage.of("voting", vote.getId(), json);
+                return KafkaRecord.of("voting", vote.getId(), json);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

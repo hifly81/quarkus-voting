@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redhat.demo.voting.model.VoteEntity;
 import io.smallrye.reactive.messaging.annotations.Merge;
-import io.smallrye.reactive.messaging.kafka.KafkaMessage;
+import io.smallrye.reactive.messaging.kafka.KafkaRecord;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class Consumer {
     @Incoming("voting")
     @Merge
     @Transactional
-    public CompletionStage<Void> onMessage(KafkaMessage<String, String> message) throws IOException {
+    public CompletionStage<Void> onMessage(KafkaRecord<String, String> message) throws IOException {
         try {
             JsonNode json = objectMapper.readTree(message.getPayload());
             Long pollId = json.get("pollId").asLong();
