@@ -120,14 +120,18 @@ mvn clean compile test
 
 ### Endpoints
 
-Test them with swagger, available at:<br>
-http://host/swagger-ui
+Test them with swagger, available at:
+```bash
+http://<your-host>/swagger-ui
+```
 
 
 ### Jaeger
 
-See tarcing at:<br>
-http://host:16686
+See tracing at:<br>
+```bash
+http://<your-host>:16686
+```
 
 
 ### Compile and Create Images
