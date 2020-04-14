@@ -13,7 +13,7 @@
 
         $.ajax({
             type: "POST",
-            url: "http://voting-service-quarkus-quarkus-voting.apps.nodisk.space/voting",
+            url: "http://localhost:8080/voting",
             data: resultJson,
             success: function(){alert("Thank you for your Vote!");},
             dataType: "json",

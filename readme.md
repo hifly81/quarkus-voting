@@ -89,6 +89,7 @@ Images:
  - Postgres (image debezium/postgres) on local port 5432
  - Zookeeper (image debezium/zookeeper) on local port 2181
  - Kafka (image debezium/kafka) on local port 9092
+ - Jaeger (image jaegertracing/all-in-one) on local port 16686
  - Voting Service (image quay.io/bridlos/voting-service-quarkus) on local port 8080
 
 ```bash
@@ -120,7 +121,13 @@ mvn clean compile test
 ### Endpoints
 
 Test them with swagger, available at:<br>
-http://<host>/swagger-ui
+http://host/swagger-ui
+
+
+### Jaeger
+
+See tarcing at:<br>
+http://host:16686
 
 
 ### Compile and Create Images

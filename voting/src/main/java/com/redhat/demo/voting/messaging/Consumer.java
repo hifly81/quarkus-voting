@@ -4,8 +4,9 @@ package com.redhat.demo.voting.messaging;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redhat.demo.voting.model.VoteEntity;
-import io.smallrye.reactive.messaging.annotations.Merge;
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
+import org.eclipse.microprofile.context.ManagedExecutor;
+import org.eclipse.microprofile.context.ThreadContext;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
@@ -27,33 +27,48 @@ public class Consumer {
     @Inject
     EntityManager entityManager;
 
-    @Incoming("voting")
-    @Merge
+
     @Transactional
-    public CompletionStage<Void> onMessage(KafkaRecord<String, String> message) throws IOException {
-        try {
-            JsonNode json = objectMapper.readTree(message.getPayload());
-            Long pollId = json.get("pollId").asLong();
-            Integer option = json.get("option").asInt();
-            String voteId = json.get("id").asText();
-            String description = json.get("description").asText();
+    @Incoming("voting")
+    public CompletionStage<?> onMessage(KafkaRecord<String, String> message) {
 
-            //Store the vote
-            LOGGER.info("Received message from kafka with the message: " + json);
+        /**
+         * https://stackoverflow.com/questions/58534957
+         */
+        ManagedExecutor executor = ManagedExecutor.builder()
+                .maxAsync(5)
+                .propagated(ThreadContext.CDI,
+                        ThreadContext.TRANSACTION)
+                .build();
+        ThreadContext threadContext = ThreadContext.builder()
+                .propagated(ThreadContext.CDI,
+                        ThreadContext.TRANSACTION)
+                .build();
 
-            VoteEntity entity = new VoteEntity();
-            entity.setId(voteId);
-            entity.setOption(option);
-            entity.setDescription(description);
-            entity.setPollId(pollId);
+        return executor.runAsync(threadContext.contextualRunnable(() -> {
+            try {
+                JsonNode json = objectMapper.readTree(message.getPayload());
+                Long pollId = json.get("pollId").asLong();
+                Integer option = json.get("option").asInt();
+                String voteId = json.get("id").asText();
+                String description = json.get("description").asText();
 
-            entityManager.persist(entity);
-            entityManager.flush();
+                //Store the vote
+                LOGGER.info("Received message from kafka with the message: " + json);
 
+                VoteEntity entity = new VoteEntity();
+                entity.setId(voteId);
+                entity.setOption(option);
+                entity.setDescription(description);
+                entity.setPollId(pollId);
 
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        return message.ack();
+                entityManager.persist(entity);
+            } catch(Exception e) {
+
+            } finally {
+                message.ack();
+            }
+        }));
     }
+
 }

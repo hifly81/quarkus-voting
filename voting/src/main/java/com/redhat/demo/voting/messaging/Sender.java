@@ -15,7 +15,6 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @ApplicationScoped
-
 public class Sender {
 
     @Inject
@@ -30,7 +29,7 @@ public class Sender {
 
     }
 
-    @Outgoing("voting")
+    @Outgoing("voting-prod")
     public CompletionStage<KafkaRecord<String, String>> send() {
         return CompletableFuture.supplyAsync(() -> {
             try {

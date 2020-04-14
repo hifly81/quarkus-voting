@@ -43,3 +43,8 @@ echo -e "\nStart Kafka container...."
 docker run -d --name my-cluster-kafka-bootstrap -p 9092:9092 --link zookeeper:zookeeper debezium/kafka
 echo -e "\nKafka started."
 
+############################ Jaeger
+sleep 5
+echo -e "\nStart Jaeger container...."
+docker run --name jaeger -p 5775:5775/udp -p 6831:6831/udp -p 6832:6832/udp -p 5778:5778 -p 16686:16686 -p 14268:14268 jaegertracing/all-in-one:latest
+echo -e "\Jaeger started."
