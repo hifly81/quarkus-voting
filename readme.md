@@ -100,6 +100,11 @@ wget https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/met
 Follow the instruction to import the kafka and zookeeper grafana dashboards:<br>
 https://strimzi.io/docs/latest/#grafana_dashboard
 
+Import the custom grafana dashboard for showing poll results:
+```bash
+grafana/grafana-unconference.json
+```
+
 Results will be available at:
 
 ```bash
