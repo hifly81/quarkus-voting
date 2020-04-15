@@ -12,7 +12,7 @@ Images:
 
 In order to create the demo on your openshift environment, you need:
  - ocp user with cluster-admin role
- - oc client installed on your machine (tested with 3.11.x)
+ - oc client installed on your machine
  - AMQ Streams 1.x for ocp downloaded from Red Hat<br>
  https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq.streams
 
@@ -33,6 +33,8 @@ oc patch dc/postgres --patch '{"spec":{"template":{"spec":{"serviceAccountName":
 oc exec $(oc get pods | grep postgres | cut -d " " -f1) -- bash -c 'psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE voting;"'
 ```
 
+#### Install AMQ Streams on OpenShift 3.11
+
 Install AMQ Streams cluster operator and a kafka cluster with 3 brokers (ephemeral and with prometheus metrics).<br>
 This step requires that you've downloaded and unpacked the AMQ Streams zip archive for ocp <br>
 (for more info about the installation, https://access.redhat.com/documentation/en-us/red_hat_amq/7.2/html-single/using_amq_streams_on_openshift_container_platform/index)
@@ -48,13 +50,33 @@ oc apply -f install/cluster-operator -n quarkus-voting
 oc apply -f examples/metrics/kafka-metrics.yaml
 ```
 
-Install voting microservice:
+#### Install AMQ Streams on OpenShift 4.x
+
+In the OpenShift 4 web console, click Operators > OperatorHub.<br>
+Search or browse for the AMQ Streams Operator, in the Streaming & Messaging category. <br>
+Click the AMQ Streams tile and then, in the sidebar on the right, click Install.<br>
+On the Create Operator Subscription screen, choose from the following installation and update options:<br>
+Installation Mode: Choose to install the AMQ Streams Operator to a specific (project) namespace <br>
+Click Subscribe; the AMQ Streams Operator is installed to your OpenShift cluster.<br>
+
+
+Verify that the amq-streams-cluster-operator is Running:<br>
+
+```bash
+oc get pods
+NAME                                                   READY     STATUS    RESTARTS   AGE
+amq-streams-cluster-operator-v1.4.0-55f4b48cc6-mhckl   1/1       Running   0          56s
+```
+
+#### Install voting microservice
+
 ```bash
 oc new-app quay.io/bridlos/voting-service-quarkus
 oc expose svc/voting-service-quarkus
 ```
 
-Install prometheus and grafana:
+#### Install prometheus and grafana
+
 ```bash
 wget https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/0.10.0/metrics/examples/prometheus/kubernetes.yaml
 mv kubernetes.yaml prometheus.yaml
@@ -75,7 +97,9 @@ https://strimzi.io/docs/latest/#grafana_dashboard
 
 Results will be available at:
 
-http://<voting-ocp-route>/voting/results
+```bash
+http://<your-host>/voting/results
+```
 
 and on a grafana dashboard
 
