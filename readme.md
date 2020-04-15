@@ -52,12 +52,12 @@ oc apply -f examples/metrics/kafka-metrics.yaml
 
 #### Install AMQ Streams on OpenShift 4.x
 
-In the OpenShift 4 web console, click Operators > OperatorHub.<br>
-Search or browse for the AMQ Streams Operator, in the Streaming & Messaging category. <br>
-Click the AMQ Streams tile and then, in the sidebar on the right, click Install.<br>
-On the Create Operator Subscription screen, choose from the following installation and update options:<br>
-Installation Mode: Choose to install the AMQ Streams Operator to a specific (project) namespace <br>
-Click Subscribe; the AMQ Streams Operator is installed to your OpenShift cluster.<br>
+a) In the OpenShift 4 web console, click Operators > OperatorHub.<br>
+b) Search or browse for the AMQ Streams Operator, in the Streaming & Messaging category. <br>
+c) Click the AMQ Streams tile and then, in the sidebar on the right, click Install.<br>
+d) On the Create Operator Subscription screen, choose from the following installation and update options:<br>
+   Installation Mode: Choose to install the AMQ Streams Operator to a specific (project) namespace <br>
+e) Click Subscribe; the AMQ Streams Operator is installed to your OpenShift cluster.<br>
 
 
 Verify that the amq-streams-cluster-operator is Running:<br>
@@ -66,6 +66,11 @@ Verify that the amq-streams-cluster-operator is Running:<br>
 oc get pods
 NAME                                                   READY     STATUS    RESTARTS   AGE
 amq-streams-cluster-operator-v1.4.0-55f4b48cc6-mhckl   1/1       Running   0          56s
+```
+
+Then apply the kafka CRD:
+```bash
+oc apply -f examples/metrics/kafka-metrics.yaml
 ```
 
 #### Install voting microservice
