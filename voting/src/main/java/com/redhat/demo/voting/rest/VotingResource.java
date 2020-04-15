@@ -2,6 +2,8 @@ package com.redhat.demo.voting.rest;
 
 import com.redhat.demo.voting.service.VotingService;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.List;
 
 @Path("/voting")
@@ -36,6 +39,8 @@ public class VotingResource {
     @GET
     @Path("/results")
     @Produces(MediaType.APPLICATION_JSON)
+    @Fallback(fallbackMethod = "fallbackResults")
+    @Timeout(500)
     public List<Result> results() {
         return votingService.getResults();
     }
@@ -44,6 +49,16 @@ public class VotingResource {
     public Response add(Vote vote) {
         vote = votingService.addVote(vote);
         return Response.ok(vote).build();
+    }
+
+    public List<Result> fallbackResults() {
+        LOGGER.info("Falling back to VotingResource#fallbackResults()");
+        Result dummyResult = new Result();
+        dummyResult.setPollId(-1l);
+        dummyResult.setDescription("Dummy Poll");
+        dummyResult.setTotal(0);
+        dummyResult.setOption(0);
+        return Collections.singletonList(dummyResult);
     }
 
 
