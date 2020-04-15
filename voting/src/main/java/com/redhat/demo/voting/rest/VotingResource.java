@@ -39,8 +39,8 @@ public class VotingResource {
     @GET
     @Path("/results")
     @Produces(MediaType.APPLICATION_JSON)
+    @Timeout(250)
     @Fallback(fallbackMethod = "fallbackResults")
-    @Timeout(500)
     public List<Result> results() {
         return votingService.getResults();
     }

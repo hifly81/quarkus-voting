@@ -93,14 +93,12 @@ Images:
  - Voting Service (image quay.io/bridlos/voting-service-quarkus) on local port 8080
 
 ```bash
-cd voting/
 ./deploy-docker.sh
 ```
 
 If you want to run the voting application in dev mode use the script:
 
 ```bash
-cd voting/
 ./deploy-docker-no-voting.sh
 ```
 
@@ -108,7 +106,7 @@ and then run the voting application with:
 
 ```bash
 cd voting/
-./mvnw compile quarkus:dev (debug port 5005)
+./mvnw clean compile quarkus:dev (debug port 5005)
 ```
 
 To test the application run:
@@ -123,6 +121,7 @@ mvn clean compile test
 Test them with swagger, available at:
 ```bash
 http://<your-host>/swagger-ui
+http://<your-host>/openapi
 ```
 
 
@@ -139,6 +138,5 @@ http://<your-host>:16686
 Launch the script to compile and create the native images:
 
 ```bash
-cd voting/
 ./build-native-image.sh
 ```
