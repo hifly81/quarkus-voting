@@ -127,13 +127,13 @@ Images:
  - Voting Service (image quay.io/bridlos/voting-service-quarkus) on local port 8080
 
 ```bash
-./deploy-docker.sh
+./scripts/deploy-docker.sh
 ```
 
 If you want to run the voting application in dev mode use the script:
 
 ```bash
-./deploy-docker-no-voting.sh
+./scripts/deploy-docker-no-voting.sh
 ```
 
 and then run the voting application with:
@@ -172,5 +172,5 @@ http://<your-host>:16686
 Launch the script to compile and create the native images:
 
 ```bash
-./build-native-image.sh
+./scripts/build-native-image.sh
 ```

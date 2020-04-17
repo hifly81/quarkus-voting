@@ -15,7 +15,7 @@ image_voting_version=latest
 ############################ Voting Service
 
 #create image
-cd voting/
+cd ../voting/
 mvn clean package -Pnative -Dnative-image.docker-build=true
 docker build -f Dockerfile.native -t ${image_voting_name}:${image_voting_version} .
 
