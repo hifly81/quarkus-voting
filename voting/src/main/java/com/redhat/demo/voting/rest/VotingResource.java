@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,9 +45,9 @@ public class VotingResource {
     }
 
     @POST
-    public Response add(Vote vote) {
+    public Vote add(Vote vote) {
         vote = votingService.addVote(vote);
-        return Response.ok(vote).build();
+        return vote;
     }
 
     public List<Result> fallbackResults() {

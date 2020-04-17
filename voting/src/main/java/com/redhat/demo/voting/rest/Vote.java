@@ -2,6 +2,8 @@ package com.redhat.demo.voting.rest;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
+import java.util.Objects;
+
 @RegisterForReflection
 public class Vote {
 
@@ -41,5 +43,21 @@ public class Vote {
 
     public void setOption(Integer option) {
         this.option = option;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vote vote = (Vote) o;
+        return Objects.equals(id, vote.id) &&
+                Objects.equals(pollId, vote.pollId) &&
+                Objects.equals(option, vote.option) &&
+                Objects.equals(description, vote.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, pollId, option, description);
     }
 }
