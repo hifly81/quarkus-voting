@@ -24,10 +24,10 @@ public class VotingResource {
     @Inject
     VotingService votingService;
 
-    @ConfigProperty(name = "greeting.message", defaultValue="!")
+    @ConfigProperty(name = "greeting.message", defaultValue="hello")
     String greetingMessage;
 
-    @ConfigProperty(name = "greeting.name", defaultValue="!")
+    @ConfigProperty(name = "greeting.name", defaultValue="voting app")
     String greetingName;
 
     @GET
