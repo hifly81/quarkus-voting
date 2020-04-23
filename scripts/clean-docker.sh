@@ -19,7 +19,6 @@ docker stop $(docker ps -a | grep kafka | cut -d ' ' -f 1)
 docker stop $(docker ps -a | grep zookeeper | cut -d ' ' -f 1)
 docker stop $(docker ps -a | grep postgres | cut -d ' ' -f 1)
 docker stop $(docker ps -a | grep jaeger | cut -d ' ' -f 1)
-docker rm $(docker ps -a | grep voting | cut -d ' ' -f 1)
 docker rm $(docker ps -a | grep kafka | cut -d ' ' -f 1)
 docker rm $(docker ps -a | grep zookeeper | cut -d ' ' -f 1)
 docker rm $(docker ps -a | grep postgres | cut -d ' ' -f 1)
@@ -28,7 +27,6 @@ docker rmi debezium/zookeeper
 docker rmi debezium/kafka
 docker rmi debezium/postgres
 docker rmi jaegertracing/all-in-one
-docker rmi voting-service-quarkus
 
 
 echo -e "\nPruning done"

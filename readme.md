@@ -3,12 +3,12 @@ Quarkus App for Voting
 
 ### Launch on OpenShift
 
-Images are downloaded from docker hub and from https://quay.io
+Images are downloaded from docker hub
 
 Images:
  - Postgres (image debezium/postgres) on port 5432
  - AMQ Streams (Zookeeper on port 2181 and Kafka on port 9092)
- - Voting Service (image quay.io/bridlos/voting-service-quarkus) on port 8080
+ - Voting Service on port 8080
 
 In order to create the demo on your openshift environment, you need:
  - ocp user with cluster-admin role
@@ -76,8 +76,8 @@ oc apply -f examples/metrics/kafka-metrics.yaml
 #### Install voting microservice
 
 ```bash
-oc new-app quay.io/bridlos/voting-service-quarkus
-oc expose svc/voting-service-quarkus
+cd voting/
+./mvnw clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes.deploy=true
 ```
 
 #### Install prometheus and grafana
@@ -117,18 +117,13 @@ and on a grafana dashboard
 ### Launch on local env - linux and mac
 
 Launch the bootstrap script to create the docker containers.<br>
-Images are downloaded from docker hub and from quay.io.
+Images are downloaded from docker hub.
 
 Images:
  - Postgres (image debezium/postgres) on local port 5432
  - Zookeeper (image debezium/zookeeper) on local port 2181
  - Kafka (image debezium/kafka) on local port 9092
  - Jaeger (image jaegertracing/all-in-one) on local port 16686
- - Voting Service (image quay.io/bridlos/voting-service-quarkus) on local port 8080
-
-```bash
-./scripts/deploy-docker.sh
-```
 
 If you want to run the voting application in dev mode use the script:
 
