@@ -2,6 +2,7 @@ package com.redhat.demo.voting;
 
 import com.redhat.demo.voting.rest.Result;
 import com.redhat.demo.voting.rest.Vote;
+import com.redhat.demo.voting.service.CacheService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -9,6 +10,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.wildfly.common.Assert;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -17,6 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class VotingResourceTest {
+
+    @Inject
+    private CacheService cacheService;
+
 
     @Test
     public void testHelloEndpoint() {

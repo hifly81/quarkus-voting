@@ -10,8 +10,12 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
+
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.OK;
 
 @Path("/voting")
 @Produces(MediaType.APPLICATION_JSON)
@@ -45,9 +49,13 @@ public class VotingResource {
     }
 
     @POST
-    public Vote add(Vote vote) {
-        vote = votingService.addVote(vote);
-        return vote;
+    public Response add(Vote vote) {
+        try {
+            vote = votingService.addVote(vote);
+            return Response.status(OK).entity(vote).build();
+        } catch (Exception e) {
+            return Response.status(INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     public List<Result> fallbackResults() {
