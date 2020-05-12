@@ -20,10 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusTest
 public class VotingResourceTest {
 
-    @Inject
-    private CacheService cacheService;
-
-
     @Test
     public void testHelloEndpoint() {
         given()
