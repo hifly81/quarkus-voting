@@ -1,14 +1,21 @@
 package com.redhat.demo.voting.model;
 
+import org.infinispan.protostream.annotations.ProtoFactory;
+import org.infinispan.protostream.annotations.ProtoField;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class PollOption {
+public class PollOption implements Serializable {
 
-    private Integer id;
-    private String description;
+    @ProtoField(number = 1)
+    Integer id;
+    @ProtoField(number = 2)
+    String description;
 
     public PollOption() {}
 
+    @ProtoFactory
     public PollOption(Integer id, String description) {
         this.id = id;
         this.description = description;

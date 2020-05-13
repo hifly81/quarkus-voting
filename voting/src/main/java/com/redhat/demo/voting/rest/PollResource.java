@@ -17,12 +17,12 @@ import java.util.List;
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static javax.ws.rs.core.Response.Status.OK;
 
-@Path("/voting")
+@Path("/poll")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class VotingResource {
+public class PollResource {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VotingResource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PollResource.class);
 
     @Inject
     VotingService votingService;
@@ -43,12 +43,21 @@ public class VotingResource {
     @Path("/results")
     @Produces(MediaType.APPLICATION_JSON)
     @Timeout(250)
-    @Fallback(fallbackMethod = "fallbackResults")
-    public List<Result> results() {
+    @Fallback(fallbackMethod = "fallbackPolls")
+    public List<Result> pollResults() {
         return votingService.getResults();
     }
 
+    @GET
+    @Path("/results/{pollId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Timeout(250)
+    public List<Result> pollResultsById(@PathParam("pollId") Long pollId) {
+        return votingService.getResultsByPollId(pollId);
+    }
+
     @POST
+    @Path("/vote")
     public Response add(Vote vote) {
         try {
             vote = votingService.addVote(vote);
@@ -58,8 +67,8 @@ public class VotingResource {
         }
     }
 
-    public List<Result> fallbackResults() {
-        LOGGER.info("Falling back to VotingResource#fallbackResults()");
+    public List<Result> fallbackPolls() {
+        LOGGER.info("Falling back to PollResource#fallbackPolls()");
         Result dummyResult = new Result();
         dummyResult.setPollId(-1l);
         dummyResult.setDescription("Dummy Poll");

@@ -3,10 +3,11 @@ package com.redhat.demo.voting.model;
 import org.infinispan.protostream.annotations.ProtoFactory;
 import org.infinispan.protostream.annotations.ProtoField;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class Poll {
+public class Poll implements Serializable  {
 
     @ProtoField(number = 1)
     Long id;
@@ -39,6 +40,7 @@ public class Poll {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public List<PollOption> getOptions() {
         return options;
     }
@@ -61,5 +63,13 @@ public class Poll {
     @Override
     public int hashCode() {
         return Objects.hash(id, description, options);
+    }
+
+    @Override
+    public String toString() {
+        return "Poll{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

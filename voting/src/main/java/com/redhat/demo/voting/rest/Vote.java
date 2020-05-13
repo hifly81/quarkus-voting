@@ -10,7 +10,6 @@ public class Vote {
     private String id;
     private Long pollId;
     private Integer option;
-    private String description;
 
 
     public String getId() {
@@ -19,14 +18,6 @@ public class Vote {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Long getPollId() {
@@ -52,12 +43,11 @@ public class Vote {
         Vote vote = (Vote) o;
         return Objects.equals(id, vote.id) &&
                 Objects.equals(pollId, vote.pollId) &&
-                Objects.equals(option, vote.option) &&
-                Objects.equals(description, vote.description);
+                Objects.equals(option, vote.option);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, pollId, option, description);
+        return Objects.hash(id, pollId, option);
     }
 }

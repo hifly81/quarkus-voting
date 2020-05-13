@@ -11,7 +11,7 @@
     <properties>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <surefire-plugin.version>2.22.0</surefire-plugin.version>
-        <quarkus.version>1.3.2.Final</quarkus.version>
+        <quarkus.version>1.4.2.Final</quarkus.version>
 
         <maven.compiler.parameters>true</maven.compiler.parameters>
         <maven.compiler.source>11</maven.compiler.source>

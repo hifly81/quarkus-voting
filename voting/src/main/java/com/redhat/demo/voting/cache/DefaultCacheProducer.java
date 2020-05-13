@@ -23,16 +23,16 @@ public class DefaultCacheProducer {
 
     public static final Logger log = Logger.getLogger(DefaultCacheProducer.class);
 
-    @ConfigProperty(name = "poll.cache.mode")
-    private String cacheModeValue;
+    @ConfigProperty(name = "poll.cache.mode", defaultValue = "DIST_ASYNC")
+    String cacheModeValue;
 
-    @ConfigProperty(name = "poll.cache.entry.lifespan.hours")
-    private long cacheEntryLifespan;
+    @ConfigProperty(name = "poll.cache.entry.lifespan.hours", defaultValue = "1")
+    String cacheEntryLifespan;
 
     @Produces
     @DefaultCache
-    public Cache<Integer, Poll> returnCache() {
-        Cache<Integer, Poll> cache = defaultCacheContainer().getCache();
+    public Cache<Long, Poll> returnCache() {
+        Cache<Long, Poll> cache = defaultCacheContainer().getCache();
         return cache;
     }
 
@@ -49,7 +49,7 @@ public class DefaultCacheProducer {
                 .l1().lifespan(25000L)
                 .hash().numOwners(2)
                 .expiration()
-                .lifespan(cacheEntryLifespan, TimeUnit.HOURS)
+                .lifespan(Long.valueOf(cacheEntryLifespan), TimeUnit.HOURS)
                 .build();
 
         return config;

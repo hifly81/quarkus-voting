@@ -50,6 +50,28 @@ public class VotingService {
         return returnList;
     }
 
+    @Traced(operationName = "VotingService.getResultsByPollId")
+    public List<Result> getResultsByPollId(Long pollId) {
+        List<Object[]> results =
+                entityManager.createQuery("SELECT v.pollId, v.option, COUNT(v) AS total FROM Vote v where v.pollId = :pollId GROUP BY v.pollId,v.option")
+                        .setParameter("pollId", pollId).getResultList();
+        List<Result> returnList = new ArrayList<>();
+        for (Object[] result : results) {
+            int option = ((Number) result[1]).intValue();
+            int count = ((Number) result[2]).intValue();
+            Result temp = new Result();
+            temp.setOption(option);
+            temp.setPollId(pollId);
+            temp.setTotal(count);
+            Poll poll = cacheService.getEntry(pollId);
+            if(poll != null)
+                temp.setDescription(poll.getDescription());
+            returnList.add(temp);
+        }
+        return returnList;
+    }
+
+
     @Traced(operationName = "VotingService.addVote")
     public Vote addVote(Vote vote) throws Exception {
         LOGGER.info("Adding vote: " + vote);
