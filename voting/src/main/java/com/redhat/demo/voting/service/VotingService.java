@@ -1,6 +1,7 @@
 package com.redhat.demo.voting.service;
 
 import com.redhat.demo.voting.messaging.Sender;
+import com.redhat.demo.voting.model.Poll;
 import com.redhat.demo.voting.rest.Result;
 import com.redhat.demo.voting.rest.Vote;
 import org.slf4j.Logger;
@@ -18,24 +19,14 @@ public class VotingService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VotingService.class);
 
-    private static Map<Integer, String> options = new HashMap<Integer, String>() {
-        {
-            put(0, "Kafka on OpenShift: AMQ Streams");
-            put(1, "Reactive applications with Kafka");
-            put(2, "AMQ Streams http/mqtt bridge");
-            put(3, "Streams API: use cases");
-            put(4, "Kafka connectors: use cases");
-            put(5, "Kafka and debezium: use cases");
-            put(6, "Kafka and other Red Hat mw products");
-            put(7, "Kafka monitoring and Admin");
-        }
-    };
-
     @Inject
     EntityManager entityManager;
 
     @Inject
     Sender sender;
+
+    @Inject
+    CacheService cacheService;
 
 
     @Traced(operationName = "VotingService.getResults")
@@ -51,18 +42,43 @@ public class VotingService {
             temp.setOption(option);
             temp.setPollId(pollId);
             temp.setTotal(count);
-            temp.setDescription(options.get(option));
+            Poll poll = cacheService.getEntry(pollId);
+            if(poll != null)
+                temp.setDescription(poll.getDescription());
             returnList.add(temp);
         }
         return returnList;
     }
 
+    @Traced(operationName = "VotingService.getResultsByPollId")
+    public List<Result> getResultsByPollId(Long pollId) {
+        List<Object[]> results =
+                entityManager.createQuery("SELECT v.pollId, v.option, COUNT(v) AS total FROM Vote v where v.pollId = :pollId GROUP BY v.pollId,v.option")
+                        .setParameter("pollId", pollId).getResultList();
+        List<Result> returnList = new ArrayList<>();
+        for (Object[] result : results) {
+            int option = ((Number) result[1]).intValue();
+            int count = ((Number) result[2]).intValue();
+            Result temp = new Result();
+            temp.setOption(option);
+            temp.setPollId(pollId);
+            temp.setTotal(count);
+            Poll poll = cacheService.getEntry(pollId);
+            if(poll != null)
+                temp.setDescription(poll.getDescription());
+            returnList.add(temp);
+        }
+        return returnList;
+    }
+
+
     @Traced(operationName = "VotingService.addVote")
-    public Vote addVote(Vote vote) {
+    public Vote addVote(Vote vote) throws Exception {
         LOGGER.info("Adding vote: " + vote);
-        vote.setPollId(123l);
+        Poll poll = cacheService.getEntry(vote.getPollId());
+        if(poll == null)
+            throw new Exception("Poll not exists!");
         vote.setId(UUID.randomUUID().toString());
-        vote.setDescription(options.get(vote.getOption()));
         sender.add(vote);
         return vote;
     }
