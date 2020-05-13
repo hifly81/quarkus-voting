@@ -1,4 +1,4 @@
-Quarkus App for Voting
+Quarkus App for Polls
 =============================
 
 ### Launch on OpenShift
@@ -108,7 +108,7 @@ grafana/grafana-unconference.json
 Results will be available at:
 
 ```bash
-http://<your-host>/voting/results
+http://<your-host>/poll/results
 ```
 
 and on a grafana dashboard
